@@ -62,6 +62,15 @@ if not all([SMTP_HOST, SMTP_USER, SMTP_PASSWORD]):
 # Create the main app
 app = FastAPI(title="MeetDelux - Lüks Seminer Salonu Rezervasyon API", version="1.0.0")
 
+# Configure CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # In production, specify exact origins
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 # Create a router with the /api prefix
 api_router = APIRouter(prefix="/api")
 
