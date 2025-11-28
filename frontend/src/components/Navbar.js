@@ -160,7 +160,7 @@ const Navbar = () => {
                 </DropdownMenuContent>
               </DropdownMenu>
             ) : (
-              <div className="flex items-center space-x-3">
+              <div className="hidden sm:flex items-center space-x-3">
                 <Link to="/login">
                   <Button variant="ghost" className="text-gray-700 hover:text-indigo-600">
                     Giriş Yap
@@ -175,6 +175,82 @@ const Navbar = () => {
             )}
           </div>
         </div>
+
+        {/* Mobile Menu */}
+        {mobileMenuOpen && (
+          <div className="lg:hidden border-t border-gray-200 py-4">
+            <div className="flex flex-col space-y-2">
+              <Link
+                to="/"
+                onClick={() => setMobileMenuOpen(false)}
+                className={`flex items-center space-x-2 px-4 py-3 rounded-lg transition-colors ${
+                  isActive('/') 
+                  ? 'text-indigo-600 bg-indigo-50' 
+                  : 'text-gray-700 hover:text-indigo-600 hover:bg-gray-50'
+                }`}
+              >
+                <Home className="h-5 w-5" />
+                <span className="text-base">Ana Sayfa</span>
+              </Link>
+              
+              <Link
+                to="/rooms"
+                onClick={() => setMobileMenuOpen(false)}
+                className={`flex items-center space-x-2 px-4 py-3 rounded-lg transition-colors ${
+                  isActive('/rooms') 
+                  ? 'text-indigo-600 bg-indigo-50' 
+                  : 'text-gray-700 hover:text-indigo-600 hover:bg-gray-50'
+                }`}
+              >
+                <Search className="h-5 w-5" />
+                <span className="text-base">Salon Ara</span>
+              </Link>
+              
+              <Link
+                to="/hotels"
+                onClick={() => setMobileMenuOpen(false)}
+                className={`flex items-center space-x-2 px-4 py-3 rounded-lg transition-colors ${
+                  isActive('/hotels') 
+                  ? 'text-indigo-600 bg-indigo-50' 
+                  : 'text-gray-700 hover:text-indigo-600 hover:bg-gray-50'
+                }`}
+              >
+                <Building2 className="h-5 w-5" />
+                <span className="text-base">Oteller</span>
+              </Link>
+              
+              {user && (
+                <Link
+                  to="/bookings"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={`flex items-center space-x-2 px-4 py-3 rounded-lg transition-colors ${
+                    isActive('/bookings') 
+                    ? 'text-indigo-600 bg-indigo-50' 
+                    : 'text-gray-700 hover:text-indigo-600 hover:bg-gray-50'
+                  }`}
+                >
+                  <Calendar className="h-5 w-5" />
+                  <span className="text-base">Rezervasyonlarım</span>
+                </Link>
+              )}
+
+              {!user && (
+                <div className="flex flex-col space-y-2 px-4 pt-4 border-t border-gray-200">
+                  <Link to="/login" onClick={() => setMobileMenuOpen(false)}>
+                    <Button variant="ghost" className="w-full justify-start text-gray-700 hover:text-indigo-600">
+                      Giriş Yap
+                    </Button>
+                  </Link>
+                  <Link to="/register" onClick={() => setMobileMenuOpen(false)}>
+                    <Button className="w-full bg-indigo-600 hover:bg-indigo-700 text-white">
+                      Üye Ol
+                    </Button>
+                  </Link>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
       </div>
     </nav>
   );
