@@ -43,20 +43,20 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <a href="/" onClick={handleLogoClick} className="flex items-center space-x-3 cursor-pointer">
+          <a href="/" onClick={handleLogoClick} className="flex items-center space-x-2 cursor-pointer">
             <img 
               src="https://customer-assets.emergentagent.com/job_turkce-translator-4/artifacts/jua4tf7e_IMG_0255.png" 
               alt="MeetDelux Logo" 
-              className="h-16 w-16 object-contain bg-transparent"
+              className="h-12 w-12 sm:h-16 sm:w-16 object-contain bg-transparent"
               style={{filter: 'drop-shadow(0 0 0 transparent)'}}
             />
-            <span className="text-2xl font-bold text-gray-900">
+            <span className="text-xl sm:text-2xl font-bold text-gray-900">
               Meet<span className="text-indigo-600">Delux</span>
             </span>
           </a>
 
-          {/* Navigation Links */}
-          <div className="hidden md:flex items-center space-x-8">
+          {/* Desktop Navigation Links */}
+          <div className="hidden lg:flex items-center space-x-8">
             <Link
               to="/"
               className={`flex items-center space-x-1 px-3 py-2 rounded-lg transition-colors ${
