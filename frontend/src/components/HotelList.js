@@ -126,16 +126,16 @@ const HotelList = () => {
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
-        <div className="mb-8">
-          <h1 data-testid="hotels-title" className="text-3xl font-bold text-gray-900 mb-4">
+        <div className="mb-6 sm:mb-8">
+          <h1 data-testid="hotels-title" className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2 sm:mb-4">
             Tüm Oteller
           </h1>
-          <p className="text-gray-600 mb-6">
+          <p className="text-sm sm:text-base text-gray-600 mb-4 sm:mb-6">
             Türkiye'nin en prestijli otellerinin seminer salonlarını keşfedin
           </p>
           
           {/* Search Bar */}
-          <div className="relative max-w-xl">
+          <div className="relative w-full sm:max-w-xl">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
             <Input
               data-testid="hotel-search-input"
@@ -143,7 +143,7 @@ const HotelList = () => {
               placeholder="Otel adı veya şehir ara..."
               value={searchQuery}
               onChange={handleSearch}
-              className="pl-10 py-3"
+              className="pl-10 py-3 text-base"
             />
           </div>
         </div>
