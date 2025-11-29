@@ -55,34 +55,34 @@ const ShareButton = ({ title, url, description }) => {
               {/* WhatsApp */}
               <button
                 onClick={handleWhatsAppShare}
-                className="w-full flex items-center space-x-3 px-4 py-3 hover:bg-gray-50 transition-colors"
+                className="w-full flex items-center gap-3 px-4 py-3 hover:bg-gray-50 transition-colors"
               >
-                <div className="flex items-center justify-center w-8 h-8 bg-[#25D366] rounded-full">
-                  <MessageCircle className="w-4 h-4 text-white" />
+                <div className="flex items-center justify-center w-10 h-10 bg-[#25D366] rounded-full flex-shrink-0">
+                  <MessageCircle className="w-5 h-5 text-white" />
                 </div>
-                <span className="text-sm font-medium text-gray-700">WhatsApp'ta Paylaş</span>
+                <span className="text-sm font-medium text-gray-700 flex-1 text-left">WhatsApp'ta Paylaş</span>
               </button>
 
               {/* Facebook */}
               <button
                 onClick={handleFacebookShare}
-                className="w-full flex items-center space-x-3 px-4 py-3 hover:bg-gray-50 transition-colors"
+                className="w-full flex items-center gap-3 px-4 py-3 hover:bg-gray-50 transition-colors"
               >
-                <div className="flex items-center justify-center w-8 h-8 bg-[#1877F2] rounded-full">
-                  <Facebook className="w-4 h-4 text-white" fill="currentColor" />
+                <div className="flex items-center justify-center w-10 h-10 bg-[#1877F2] rounded-full flex-shrink-0">
+                  <Facebook className="w-5 h-5 text-white" fill="currentColor" />
                 </div>
-                <span className="text-sm font-medium text-gray-700">Facebook'ta Paylaş</span>
+                <span className="text-sm font-medium text-gray-700 flex-1 text-left">Facebook'ta Paylaş</span>
               </button>
 
               {/* Twitter */}
               <button
                 onClick={handleTwitterShare}
-                className="w-full flex items-center space-x-3 px-4 py-3 hover:bg-gray-50 transition-colors"
+                className="w-full flex items-center gap-3 px-4 py-3 hover:bg-gray-50 transition-colors"
               >
-                <div className="flex items-center justify-center w-8 h-8 bg-[#1DA1F2] rounded-full">
-                  <Twitter className="w-4 h-4 text-white" fill="currentColor" />
+                <div className="flex items-center justify-center w-10 h-10 bg-[#1DA1F2] rounded-full flex-shrink-0">
+                  <Twitter className="w-5 h-5 text-white" fill="currentColor" />
                 </div>
-                <span className="text-sm font-medium text-gray-700">Twitter'da Paylaş</span>
+                <span className="text-sm font-medium text-gray-700 flex-1 text-left">Twitter'da Paylaş</span>
               </button>
 
               {/* Divider */}
@@ -91,16 +91,16 @@ const ShareButton = ({ title, url, description }) => {
               {/* Copy Link */}
               <button
                 onClick={handleCopyLink}
-                className="w-full flex items-center space-x-3 px-4 py-3 hover:bg-gray-50 transition-colors"
+                className="w-full flex items-center gap-3 px-4 py-3 hover:bg-gray-50 transition-colors"
               >
-                <div className="flex items-center justify-center w-8 h-8 bg-gray-200 rounded-full">
+                <div className="flex items-center justify-center w-10 h-10 bg-gray-100 rounded-full flex-shrink-0">
                   {copied ? (
-                    <Check className="w-4 h-4 text-green-600" />
+                    <Check className="w-5 h-5 text-green-600" />
                   ) : (
-                    <Link2 className="w-4 h-4 text-gray-600" />
+                    <Link2 className="w-5 h-5 text-gray-600" />
                   )}
                 </div>
-                <span className="text-sm font-medium text-gray-700">
+                <span className="text-sm font-medium text-gray-700 flex-1 text-left">
                   {copied ? 'Kopyalandı!' : 'Linki Kopyala'}
                 </span>
               </button>
