@@ -173,6 +173,7 @@ function App() {
               </Routes>
             </main>
             <Footer />
+            <WhatsAppButton />
             <Toaster position="top-right" richColors />
           </div>
         </BrowserRouter>
