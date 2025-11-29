@@ -210,10 +210,8 @@ const RoomSearch = () => {
             />
           </div>
 
-          {/* Results - OLD SIDEBAR REMOVED */}
-          <div className="flex-1 hidden">
-            {/* Old sidebar başlangıcı */}
-            <div className="w-80-old-remove-this">
+          {/* Results Section */}
+          <div className="flex-1">
             <Card className="sticky top-4">
               <CardHeader>
                 <CardTitle className="flex items-center space-x-2">
