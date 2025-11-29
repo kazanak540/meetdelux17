@@ -27,52 +27,94 @@ const WhatsAppButton = () => {
 
   return (
     <>
-      {/* WhatsApp Floating Button */}
-      <div className="fixed bottom-6 right-6 z-50">
-        {/* Tooltip */}
-        {showTooltip && (
-          <div className="absolute bottom-full right-0 mb-2 px-4 py-2 bg-gray-900 text-white text-sm rounded-lg shadow-lg whitespace-nowrap animate-fade-in">
-            WhatsApp ile iletişime geç
-            <div className="absolute bottom-0 right-6 transform translate-y-1/2 rotate-45 w-2 h-2 bg-gray-900"></div>
+      {/* Contact Floating Buttons */}
+      <div className="fixed bottom-6 right-6 z-50 flex flex-col gap-3">
+        {/* Phone Button */}
+        <div className="relative">
+          {/* Tooltip */}
+          {showPhoneTooltip && (
+            <div className="absolute bottom-full right-0 mb-2 px-4 py-2 bg-gray-900 text-white text-sm rounded-lg shadow-lg whitespace-nowrap animate-fade-in">
+              Hemen Ara: {displayPhone}
+              <div className="absolute bottom-0 right-6 transform translate-y-1/2 rotate-45 w-2 h-2 bg-gray-900"></div>
+            </div>
+          )}
+
+          {/* Button */}
+          <button
+            onClick={handlePhoneClick}
+            onMouseEnter={() => {
+              setIsPhoneHovered(true);
+              setShowPhoneTooltip(true);
+            }}
+            onMouseLeave={() => {
+              setIsPhoneHovered(false);
+              setShowPhoneTooltip(false);
+            }}
+            className={`
+              flex items-center justify-center
+              w-14 h-14 sm:w-16 sm:h-16
+              bg-indigo-600 hover:bg-indigo-700
+              text-white rounded-full
+              shadow-lg hover:shadow-2xl
+              transition-all duration-300 ease-in-out
+              ${isPhoneHovered ? 'scale-110' : 'scale-100'}
+              group
+            `}
+            aria-label="Hemen ara"
+          >
+            <Phone 
+              className="w-6 h-6 sm:w-7 sm:h-7 group-hover:rotate-12 transition-transform duration-300" 
+              strokeWidth={2}
+            />
+          </button>
+        </div>
+
+        {/* WhatsApp Button */}
+        <div className="relative">
+          {/* Tooltip */}
+          {showWhatsAppTooltip && (
+            <div className="absolute bottom-full right-0 mb-2 px-4 py-2 bg-gray-900 text-white text-sm rounded-lg shadow-lg whitespace-nowrap animate-fade-in">
+              WhatsApp ile iletişime geç
+              <div className="absolute bottom-0 right-6 transform translate-y-1/2 rotate-45 w-2 h-2 bg-gray-900"></div>
+            </div>
+          )}
+
+          {/* Button */}
+          <button
+            onClick={handleWhatsAppClick}
+            onMouseEnter={() => {
+              setIsWhatsAppHovered(true);
+              setShowWhatsAppTooltip(true);
+            }}
+            onMouseLeave={() => {
+              setIsWhatsAppHovered(false);
+              setShowWhatsAppTooltip(false);
+            }}
+            className={`
+              flex items-center justify-center
+              w-14 h-14 sm:w-16 sm:h-16
+              bg-[#25D366] hover:bg-[#128C7E]
+              text-white rounded-full
+              shadow-lg hover:shadow-2xl
+              transition-all duration-300 ease-in-out
+              ${isWhatsAppHovered ? 'scale-110' : 'scale-100'}
+              group
+            `}
+            aria-label="WhatsApp ile iletişime geç"
+          >
+            <MessageCircle 
+              className="w-7 h-7 sm:w-8 sm:h-8 group-hover:rotate-12 transition-transform duration-300" 
+              strokeWidth={2}
+            />
+            
+            {/* Pulse Animation */}
+            <span className="absolute w-full h-full rounded-full bg-[#25D366] opacity-75 animate-ping"></span>
+          </button>
+
+          {/* Badge */}
+          <div className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 rounded-full flex items-center justify-center text-white text-xs font-bold shadow-md animate-pulse">
+            1
           </div>
-        )}
-
-        {/* Button */}
-        <button
-          onClick={handleClick}
-          onMouseEnter={() => {
-            setIsHovered(true);
-            setShowTooltip(true);
-          }}
-          onMouseLeave={() => {
-            setIsHovered(false);
-            setShowTooltip(false);
-          }}
-          className={`
-            flex items-center justify-center
-            w-14 h-14 sm:w-16 sm:h-16
-            bg-[#25D366] hover:bg-[#128C7E]
-            text-white rounded-full
-            shadow-lg hover:shadow-2xl
-            transition-all duration-300 ease-in-out
-            ${isHovered ? 'scale-110' : 'scale-100'}
-            group
-          `}
-          aria-label="WhatsApp ile iletişime geç"
-        >
-          {/* WhatsApp Icon */}
-          <MessageCircle 
-            className="w-7 h-7 sm:w-8 sm:h-8 group-hover:rotate-12 transition-transform duration-300" 
-            strokeWidth={2}
-          />
-          
-          {/* Pulse Animation */}
-          <span className="absolute w-full h-full rounded-full bg-[#25D366] opacity-75 animate-ping"></span>
-        </button>
-
-        {/* Badge (Yeni mesaj göstergesi - opsiyonel) */}
-        <div className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 rounded-full flex items-center justify-center text-white text-xs font-bold shadow-md animate-pulse">
-          1
         </div>
       </div>
 
