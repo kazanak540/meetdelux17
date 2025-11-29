@@ -1015,13 +1015,32 @@ async def search_rooms(
     
     if min_capacity:
         room_filter["capacity"] = {"$gte": min_capacity}
+    if max_capacity:
+        room_filter["capacity"] = room_filter.get("capacity", {})
+        room_filter["capacity"]["$lte"] = max_capacity
+    if min_price:
+        room_filter["price_per_day"] = {"$gte": min_price}
     if max_price:
-        room_filter["price_per_day"] = {"$lte": max_price}
+        room_filter["price_per_day"] = room_filter.get("price_per_day", {})
+        room_filter["price_per_day"]["$lte"] = max_price
     if features:
         feature_list = [f.strip() for f in features.split(",")]
-        room_filter["features"] = {"$in": feature_list}
+        room_filter["features"] = {"$all": feature_list}
     
-    rooms = await db.conference_rooms.find(room_filter).skip(skip).limit(limit).to_list(length=limit)
+    # Sorting
+    sort_field = "created_at"
+    sort_order = -1
+    if sort_by == "price_asc":
+        sort_field = "price_per_day"
+        sort_order = 1
+    elif sort_by == "price_desc":
+        sort_field = "price_per_day"
+        sort_order = -1
+    elif sort_by == "capacity":
+        sort_field = "capacity"
+        sort_order = -1
+    
+    rooms = await db.conference_rooms.find(room_filter).sort(sort_field, sort_order).skip(skip).limit(limit).to_list(length=limit)
     
     # Kur bilgisi hesapla
     client_ip = request.client.host
