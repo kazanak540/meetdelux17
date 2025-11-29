@@ -924,7 +924,7 @@ async def get_hotels(
     return [HotelResponse(**hotel) for hotel in hotels]
 
 @api_router.get("/hotels/{hotel_id}", response_model=HotelResponse)
-async def get_hotel(hotel_id: str, current_user: dict = Depends(get_optional_user)):
+async def get_hotel(hotel_id: str):
     hotel = await db.hotels.find_one({"id": hotel_id, "is_active": True})
     if not hotel:
         raise HTTPException(
@@ -932,10 +932,9 @@ async def get_hotel(hotel_id: str, current_user: dict = Depends(get_optional_use
             detail="Hotel not found"
         )
     
-    # Hide contact info from customers (prevent bypass)
-    if not current_user or current_user.get("role") == UserRole.CUSTOMER:
-        hotel["phone"] = None
-        hotel["email"] = None
+    # Hide contact info from customers (prevent platform bypass)
+    hotel["phone"] = "Rezervasyon sonrası paylaşılacaktır"
+    hotel["email"] = "Rezervasyon sonrası paylaşılacaktır"
     
     return HotelResponse(**hotel)
 
