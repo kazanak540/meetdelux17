@@ -63,6 +63,12 @@ const BookingForm = () => {
   }, [roomId]);
 
   useEffect(() => {
+    if (formData.start_date && formData.end_date && roomId) {
+      checkAvailability();
+    }
+  }, [formData.start_date, formData.end_date, roomId]);
+
+  useEffect(() => {
     calculatePricing();
   }, [formData.start_date, formData.end_date, formData.start_time, formData.end_time, formData.booking_type, room, selectedServices]);
 
