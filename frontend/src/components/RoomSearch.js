@@ -64,14 +64,17 @@ const RoomSearch = () => {
     }
   };
 
-  const searchRooms = async () => {
+  const searchRooms = async (newFilters = filters) => {
     try {
       const params = new URLSearchParams();
       
-      if (filters.city) params.append('city', filters.city);
-      if (filters.min_capacity) params.append('min_capacity', filters.min_capacity);
-      if (filters.max_price) params.append('max_price', filters.max_price);
-      if (filters.features.length > 0) params.append('features', filters.features.join(','));
+      if (newFilters.city) params.append('city', newFilters.city);
+      if (newFilters.minCapacity) params.append('min_capacity', newFilters.minCapacity);
+      if (newFilters.maxCapacity) params.append('max_capacity', newFilters.maxCapacity);
+      if (newFilters.minPrice) params.append('min_price', newFilters.minPrice);
+      if (newFilters.maxPrice) params.append('max_price', newFilters.maxPrice);
+      if (newFilters.features.length > 0) params.append('features', newFilters.features.join(','));
+      if (newFilters.sortBy) params.append('sort_by', newFilters.sortBy);
       
       const response = await axios.get(`${API}/rooms?${params.toString()}`);
       setRooms(response.data);
@@ -79,6 +82,25 @@ const RoomSearch = () => {
       console.error('Room search error:', error);
       toast.error('Arama sırasında hata oluştu');
     }
+  };
+
+  const handleFilterUpdate = (newFilters) => {
+    setFilters(newFilters);
+    searchRooms(newFilters);
+  };
+
+  const handleClearFilters = () => {
+    const cleared = {
+      city: '',
+      minCapacity: '',
+      maxCapacity: '',
+      minPrice: '',
+      maxPrice: '',
+      features: [],
+      sortBy: 'created_at'
+    };
+    setFilters(cleared);
+    searchRooms(cleared);
   };
 
   const handleFilterChange = (key, value) => {
