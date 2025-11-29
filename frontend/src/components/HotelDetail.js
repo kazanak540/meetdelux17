@@ -178,7 +178,7 @@ const HotelDetail = () => {
           </div>
           
           {/* Share Button */}
-          <div className="hidden sm:block">
+          <div className="hidden sm:block self-start" style={{ marginTop: '-3rem' }}>
             <ShareButton 
               title={hotel.name}
               description={`${hotel.city} bölgesinde ${hotel.star_rating} yıldızlı otel - Toplantı ve balo salonları için ideal!`}
