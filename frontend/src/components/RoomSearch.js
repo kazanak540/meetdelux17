@@ -9,6 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import { Search, MapPin, Users, TrendingUp, Wifi, Mic, Monitor, Snowflake, Volume2, Presentation, Filter } from 'lucide-react';
 import { toast } from 'sonner';
 import { useCurrency } from '../hooks/useCurrency';
+import FilterSidebar from './FilterSidebar';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
