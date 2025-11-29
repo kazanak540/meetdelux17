@@ -991,10 +991,13 @@ async def search_rooms(
     request: Request,
     city: Optional[str] = None,
     min_capacity: Optional[int] = None,
+    max_capacity: Optional[int] = None,
+    min_price: Optional[float] = None,
     max_price: Optional[float] = None,
     features: Optional[str] = None,  # comma-separated features
+    sort_by: Optional[str] = "created_at",  # price_asc, price_desc, capacity, rating
     skip: int = 0,
-    limit: int = 20
+    limit: int = 100
 ):
     # First get hotels matching city filter if provided
     hotel_filter = {"is_active": True}
