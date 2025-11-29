@@ -675,14 +675,31 @@ const HotelEditPage = () => {
             <CardHeader>
               <CardTitle>Fotoğraf Yönetimi</CardTitle>
             </CardHeader>
-            <CardContent>
-              <ImageUpload
-                entityId={hotelId}
-                entityType="hotel"
-                images={formData.images || []}
-                onImageUploaded={handleImageUploaded}
-                onImageRemoved={handleImageRemoved}
-              />
+            <CardContent className="space-y-6">
+              {/* Current Images */}
+              {formData.images && formData.images.length > 0 && (
+                <div>
+                  <h4 className="text-sm font-medium mb-3">Mevcut Fotoğraflar ({formData.images.length})</h4>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+                    {formData.images.map((img, idx) => (
+                      <div key={idx} className="relative group">
+                        <img src={img} alt={`Hotel ${idx + 1}`} className="w-full h-32 object-cover rounded-lg" />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+              
+              {/* New Image Upload */}
+              <div>
+                <h4 className="text-sm font-medium mb-3">Yeni Fotoğraf Ekle</h4>
+                <ImageUploader
+                  entityId={hotelId}
+                  entityType="hotel"
+                  onUploadSuccess={() => fetchHotelData()}
+                  maxImages={10}
+                />
+              </div>
             </CardContent>
           </Card>
 
