@@ -543,6 +543,15 @@ const HotelDetail = () => {
         </div>
       </div>
 
+      {/* Similar Hotels */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <SimilarHotels 
+          currentHotelId={id}
+          city={hotel.city}
+          starRating={hotel.star_rating}
+        />
+      </div>
+
       {/* Image Gallery Modal */}
       <ImageGalleryModal
         images={hotel?.images || []}
