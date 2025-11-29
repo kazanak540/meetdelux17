@@ -162,7 +162,7 @@ const HotelDetail = () => {
         )}
         <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/40 to-black/60"></div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-end pb-8">
-          <div className="text-white">
+          <div className="text-white flex-1">
             <div className="flex items-center space-x-2 mb-2">
               <MapPin className="h-5 w-5" />
               <span className="text-white drop-shadow-lg">{hotel.city}</span>
@@ -174,6 +174,14 @@ const HotelDetail = () => {
               ))}
               <span className="ml-2 text-white drop-shadow-lg">{hotel.star_rating} yıldızlı otel</span>
             </div>
+          </div>
+          
+          {/* Share Button */}
+          <div className="hidden sm:block">
+            <ShareButton 
+              title={hotel.name}
+              description={`${hotel.city} bölgesinde ${hotel.star_rating} yıldızlı otel - Toplantı ve balo salonları için ideal!`}
+            />
           </div>
         </div>
       </div>
