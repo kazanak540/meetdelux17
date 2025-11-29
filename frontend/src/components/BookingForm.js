@@ -47,6 +47,9 @@ const BookingForm = () => {
     servicesPrice: 0,
     totalPrice: 0
   });
+
+  const [bookedDates, setBookedDates] = useState([]);
+  const [checkingAvailability, setCheckingAvailability] = useState(false);
   
   const [extraServices, setExtraServices] = useState([]);
   const [selectedServices, setSelectedServices] = useState([]);
