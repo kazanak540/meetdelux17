@@ -37,11 +37,12 @@
 - [ ] Easy cancellation flow
 
 ### 5. Arama & Filtreleme
-- [ ] Fiyat aralığı filtresi
-- [ ] Tarih bazlı arama
-- [ ] Mesafe/konum filtresi
-- [ ] Amenities filter
-- [ ] Sıralama (fiyat, rating, popülerlik)
+- [x] Fiyat aralığı filtresi (min/max)
+- [x] Kapasite filtresi (min/max)
+- [x] Şehir dropdown filtresi
+- [x] Özellikler checkbox filtresi
+- [x] Sıralama (fiyat, kapasite, yeni)
+- [ ] Tarih bazlı müsaitlik
 - [ ] Google Maps integration
 
 ### 6. Review & Rating Sistemi
