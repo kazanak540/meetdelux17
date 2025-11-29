@@ -24,9 +24,12 @@ const RoomSearch = () => {
 
   const [filters, setFilters] = useState({
     city: searchParams.get('city') || '',
-    min_capacity: '',
-    max_price: '',
-    features: []
+    minCapacity: '',
+    maxCapacity: '',
+    minPrice: '',
+    maxPrice: '',
+    features: [],
+    sortBy: 'created_at'
   });
 
   useEffect(() => {
