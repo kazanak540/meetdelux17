@@ -910,13 +910,19 @@ async def get_hotels(
     return [HotelResponse(**hotel) for hotel in hotels]
 
 @api_router.get("/hotels/{hotel_id}", response_model=HotelResponse)
-async def get_hotel(hotel_id: str):
+async def get_hotel(hotel_id: str, current_user: dict = Depends(get_optional_user)):
     hotel = await db.hotels.find_one({"id": hotel_id, "is_active": True})
     if not hotel:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Hotel not found"
         )
+    
+    # Hide contact info from customers (prevent bypass)
+    if not current_user or current_user.get("role") == UserRole.CUSTOMER:
+        hotel["phone"] = None
+        hotel["email"] = None
+    
     return HotelResponse(**hotel)
 
 # Conference Room Routes
