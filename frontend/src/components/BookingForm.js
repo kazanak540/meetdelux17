@@ -93,6 +93,27 @@ const BookingForm = () => {
     }
   };
 
+  const checkAvailability = async () => {
+    if (!formData.start_date || !formData.end_date) return;
+    
+    setCheckingAvailability(true);
+    try {
+      const response = await axios.get(
+        `${API}/rooms/${roomId}/availability?start_date=${formData.start_date}&end_date=${formData.end_date}`
+      );
+      
+      setBookedDates(response.data.booked_dates || []);
+      
+      if (!response.data.is_available) {
+        toast.error('Seçtiğiniz tarihler müsait değil!');
+      }
+    } catch (error) {
+      console.error('Availability check error:', error);
+    } finally {
+      setCheckingAvailability(false);
+    }
+  };
+
   const calculatePricing = () => {
     if (!room || !formData.start_date || !formData.end_date) return;
 
