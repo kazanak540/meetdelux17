@@ -230,7 +230,7 @@ const RoomSearch = () => {
                   <p className="text-gray-500 max-w-md">
                     Arama kriterlerinizi değiştirerek tekrar deneyin.
                   </p>
-                  <Button onClick={clearFilters} variant="outline">
+                  <Button onClick={handleClearFilters} variant="outline">
                     Filtreleri Temizle
                   </Button>
                 </div>
