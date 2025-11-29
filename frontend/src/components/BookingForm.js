@@ -438,6 +438,9 @@ const BookingForm = () => {
                           className="mt-1"
                           required
                         />
+                        {checkingAvailability && (
+                          <p className="text-xs text-blue-600 mt-1">Müsaitlik kontrol ediliyor...</p>
+                        )}
                       </div>
                       <div>
                         <Label htmlFor="end_date">Bitiş Tarihi</Label>
@@ -454,6 +457,18 @@ const BookingForm = () => {
                         />
                       </div>
                     </div>
+                    
+                    {/* Availability Info */}
+                    {bookedDates.length > 0 && (
+                      <div className="bg-red-50 border-l-4 border-red-500 p-4 rounded">
+                        <p className="text-sm text-red-800 font-medium">
+                          ⚠️ Dikkat: Seçtiğiniz tarih aralığında {bookedDates.length} gün dolu!
+                        </p>
+                        <p className="text-xs text-red-600 mt-1">
+                          Lütfen farklı tarihler seçin.
+                        </p>
+                      </div>
+                    )}
                     
                     {/* Time Selection */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
