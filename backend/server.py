@@ -2792,6 +2792,262 @@ async def reject_room(room_id: str, reason: Optional[str] = None, current_user: 
     
     return {"message": "Room rejected", "room_id": room_id}
 
+# ============================================================================
+# REVIEWS & RATINGS ENDPOINTS
+# ============================================================================
+
+class ReviewCreate(BaseModel):
+    hotel_id: str
+    booking_id: Optional[str] = None
+    rating: int = Field(..., ge=1, le=5)
+    comment: str = Field(..., min_length=10, max_length=1000)
+    pros: Optional[str] = None
+    cons: Optional[str] = None
+
+class ReviewResponse(BaseModel):
+    response_text: str = Field(..., min_length=10, max_length=500)
+
+@api_router.post("/reviews")
+async def create_review(
+    review_data: ReviewCreate,
+    current_user: dict = Depends(get_current_user)
+):
+    """Create a new review (only customers who have completed bookings)"""
+    
+    # Only customers can create reviews
+    if current_user["role"] != UserRole.CUSTOMER:
+        raise HTTPException(
+            status_code=403,
+            detail="Only customers can create reviews"
+        )
+    
+    # Check if hotel exists
+    hotel = await db.hotels.find_one({"id": review_data.hotel_id})
+    if not hotel:
+        raise HTTPException(status_code=404, detail="Hotel not found")
+    
+    # Check if user has completed booking at this hotel (optional but recommended)
+    if review_data.booking_id:
+        booking = await db.bookings.find_one({
+            "id": review_data.booking_id,
+            "user_id": current_user["id"],
+            "status": BookingStatus.COMPLETED
+        })
+        
+        # Get room to verify hotel
+        if booking:
+            room = await db.conference_rooms.find_one({"id": booking["room_id"]})
+            if not room or room["hotel_id"] != review_data.hotel_id:
+                raise HTTPException(
+                    status_code=400,
+                    detail="Booking is not for this hotel"
+                )
+    
+    # Check if user already reviewed this hotel
+    existing_review = await db.reviews.find_one({
+        "hotel_id": review_data.hotel_id,
+        "user_id": current_user["id"]
+    })
+    
+    if existing_review:
+        raise HTTPException(
+            status_code=400,
+            detail="You have already reviewed this hotel"
+        )
+    
+    # Create review
+    review = {
+        "id": str(uuid.uuid4()),
+        "hotel_id": review_data.hotel_id,
+        "user_id": current_user["id"],
+        "user_name": current_user["full_name"],
+        "booking_id": review_data.booking_id,
+        "rating": review_data.rating,
+        "comment": review_data.comment,
+        "pros": review_data.pros,
+        "cons": review_data.cons,
+        "is_verified": bool(review_data.booking_id),  # Verified if has booking
+        "hotel_response": None,
+        "hotel_response_date": None,
+        "helpful_count": 0,
+        "created_at": datetime.now(timezone.utc),
+        "updated_at": datetime.now(timezone.utc)
+    }
+    
+    await db.reviews.insert_one(review)
+    
+    # Update hotel average rating
+    await update_hotel_rating(review_data.hotel_id)
+    
+    return review
+
+@api_router.get("/reviews/hotel/{hotel_id}")
+async def get_hotel_reviews(
+    hotel_id: str,
+    skip: int = 0,
+    limit: int = 20,
+    sort_by: str = "created_at"  # created_at, rating, helpful_count
+):
+    """Get all reviews for a hotel"""
+    
+    # Check if hotel exists
+    hotel = await db.hotels.find_one({"id": hotel_id})
+    if not hotel:
+        raise HTTPException(status_code=404, detail="Hotel not found")
+    
+    # Determine sort order
+    sort_field = sort_by if sort_by in ["created_at", "rating", "helpful_count"] else "created_at"
+    sort_order = -1  # Descending
+    
+    # Get reviews
+    reviews_cursor = db.reviews.find(
+        {"hotel_id": hotel_id}
+    ).sort(sort_field, sort_order).skip(skip).limit(limit)
+    
+    reviews = await reviews_cursor.to_list(length=limit)
+    
+    # Get total count
+    total_count = await db.reviews.count_documents({"hotel_id": hotel_id})
+    
+    # Calculate rating distribution
+    rating_distribution = {}
+    for rating in range(1, 6):
+        count = await db.reviews.count_documents({
+            "hotel_id": hotel_id,
+            "rating": rating
+        })
+        rating_distribution[str(rating)] = count
+    
+    return {
+        "reviews": reviews,
+        "total_count": total_count,
+        "rating_distribution": rating_distribution,
+        "average_rating": hotel.get("average_rating", 0),
+        "total_reviews": hotel.get("total_reviews", 0)
+    }
+
+@api_router.put("/reviews/{review_id}/response")
+async def add_hotel_response(
+    review_id: str,
+    response_data: ReviewResponse,
+    current_user: dict = Depends(get_current_user)
+):
+    """Hotel manager can respond to a review"""
+    
+    # Only hotel managers can respond
+    if current_user["role"] not in [UserRole.HOTEL_MANAGER, UserRole.ADMIN]:
+        raise HTTPException(
+            status_code=403,
+            detail="Only hotel managers can respond to reviews"
+        )
+    
+    # Get review
+    review = await db.reviews.find_one({"id": review_id})
+    if not review:
+        raise HTTPException(status_code=404, detail="Review not found")
+    
+    # Check if manager owns the hotel
+    if current_user["role"] == UserRole.HOTEL_MANAGER:
+        hotel = await db.hotels.find_one({"id": review["hotel_id"]})
+        if hotel["manager_id"] != current_user["id"]:
+            raise HTTPException(
+                status_code=403,
+                detail="You can only respond to reviews of your own hotel"
+            )
+    
+    # Update review with response
+    await db.reviews.update_one(
+        {"id": review_id},
+        {
+            "$set": {
+                "hotel_response": response_data.response_text,
+                "hotel_response_date": datetime.now(timezone.utc),
+                "updated_at": datetime.now(timezone.utc)
+            }
+        }
+    )
+    
+    return {"message": "Response added successfully", "review_id": review_id}
+
+@api_router.post("/reviews/{review_id}/helpful")
+async def mark_review_helpful(
+    review_id: str,
+    current_user: dict = Depends(get_current_user)
+):
+    """Mark a review as helpful"""
+    
+    review = await db.reviews.find_one({"id": review_id})
+    if not review:
+        raise HTTPException(status_code=404, detail="Review not found")
+    
+    # Update helpful count
+    await db.reviews.update_one(
+        {"id": review_id},
+        {"$inc": {"helpful_count": 1}}
+    )
+    
+    return {"message": "Review marked as helpful", "review_id": review_id}
+
+@api_router.delete("/reviews/{review_id}")
+async def delete_review(
+    review_id: str,
+    current_user: dict = Depends(get_current_user)
+):
+    """Delete a review (only review owner or admin)"""
+    
+    review = await db.reviews.find_one({"id": review_id})
+    if not review:
+        raise HTTPException(status_code=404, detail="Review not found")
+    
+    # Check permissions
+    if current_user["role"] != UserRole.ADMIN and review["user_id"] != current_user["id"]:
+        raise HTTPException(
+            status_code=403,
+            detail="You can only delete your own reviews"
+        )
+    
+    # Delete review
+    await db.reviews.delete_one({"id": review_id})
+    
+    # Update hotel rating
+    await update_hotel_rating(review["hotel_id"])
+    
+    return {"message": "Review deleted successfully", "review_id": review_id}
+
+async def update_hotel_rating(hotel_id: str):
+    """Update hotel's average rating and total reviews count"""
+    
+    # Calculate average rating
+    pipeline = [
+        {"$match": {"hotel_id": hotel_id}},
+        {"$group": {
+            "_id": None,
+            "average_rating": {"$avg": "$rating"},
+            "total_reviews": {"$sum": 1}
+        }}
+    ]
+    
+    result = await db.reviews.aggregate(pipeline).to_list(length=1)
+    
+    if result:
+        avg_rating = round(result[0]["average_rating"], 1)
+        total_reviews = result[0]["total_reviews"]
+    else:
+        avg_rating = 0
+        total_reviews = 0
+    
+    # Update hotel
+    await db.hotels.update_one(
+        {"id": hotel_id},
+        {
+            "$set": {
+                "average_rating": avg_rating,
+                "total_reviews": total_reviews,
+                "updated_at": datetime.now(timezone.utc)
+            }
+        }
+    )
+
 # Include the router in the main app
 app.include_router(api_router)
 
