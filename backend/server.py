@@ -3146,6 +3146,51 @@ async def update_hotel_rating(hotel_id: str):
         }
     )
 
+# Dashboard Analytics Routes
+@api_router.get("/dashboard/stats")
+async def get_dashboard_stats(current_user: dict = Depends(get_current_user)):
+    """Get dashboard statistics for hotel managers"""
+    
+    if current_user["role"] not in [UserRole.HOTEL_MANAGER, UserRole.ADMIN]:
+        raise HTTPException(status_code=403, detail="Access denied")
+    
+    # Get user's hotels
+    hotel_filter = {}
+    if current_user["role"] == UserRole.HOTEL_MANAGER:
+        hotel_filter = {"manager_id": current_user["id"]}
+    
+    hotels = await db.hotels.find(hotel_filter, {"_id": 0}).to_list(1000)
+    hotel_ids = [h["id"] for h in hotels]
+    
+    # Get bookings for these hotels
+    room_ids = []
+    for hotel_id in hotel_ids:
+        rooms = await db.conference_rooms.find({"hotel_id": hotel_id}, {"_id": 0, "id": 1}).to_list(1000)
+        room_ids.extend([r["id"] for r in rooms])
+    
+    bookings = await db.bookings.find(
+        {"room_id": {"$in": room_ids}},
+        {"_id": 0}
+    ).to_list(10000)
+    
+    # Calculate stats
+    total_bookings = len(bookings)
+    total_revenue = sum(b.get("total_amount", 0) for b in bookings if b.get("payment_status") == "paid")
+    confirmed_bookings = len([b for b in bookings if b.get("status") == "confirmed"])
+    pending_bookings = len([b for b in bookings if b.get("status") == "pending"])
+    
+    # Recent bookings (last 10)
+    recent_bookings = sorted(bookings, key=lambda x: x.get("created_at", datetime.min), reverse=True)[:10]
+    
+    return {
+        "total_hotels": len(hotels),
+        "total_bookings": total_bookings,
+        "total_revenue": total_revenue,
+        "confirmed_bookings": confirmed_bookings,
+        "pending_bookings": pending_bookings,
+        "recent_bookings": recent_bookings
+    }
+
 # Include the router in the main app
 app.include_router(api_router)
 
