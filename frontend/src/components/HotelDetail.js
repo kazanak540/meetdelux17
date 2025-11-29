@@ -384,35 +384,39 @@ const HotelDetail = () => {
               </CardContent>
             </Card>
 
-            {/* Quick Actions */}
-            <Card>
+            {/* Booking Information */}
+            <Card className="bg-gradient-to-br from-indigo-50 to-purple-50 border-2 border-indigo-200">
               <CardContent className="p-6">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">Hızlı İşlemler</h3>
-                <div className="space-y-3">
+                <div className="text-center space-y-4">
+                  <div className="bg-white rounded-full w-16 h-16 flex items-center justify-center mx-auto shadow-md">
+                    <span className="text-3xl">📋</span>
+                  </div>
+                  
+                  <h3 className="text-xl font-bold text-gray-900">
+                    Rezervasyon Bilgilendirmesi
+                  </h3>
+                  
+                  <div className="space-y-3 text-sm text-gray-700 bg-white/70 rounded-lg p-4">
+                    <div className="flex items-start space-x-2">
+                      <span className="text-indigo-600 mt-0.5">✓</span>
+                      <p className="text-left">Rezervasyon yapmak için önce salonu seçin</p>
+                    </div>
+                    <div className="flex items-start space-x-2">
+                      <span className="text-indigo-600 mt-0.5">✓</span>
+                      <p className="text-left">Ödeme sonrası otel bilgileri tarafınıza iletilir</p>
+                    </div>
+                    <div className="flex items-start space-x-2">
+                      <span className="text-indigo-600 mt-0.5">✓</span>
+                      <p className="text-left">Rezervasyon onayı e-posta ile gönderilir</p>
+                    </div>
+                  </div>
+                  
                   <Button 
-                    className="w-full bg-indigo-600 hover:bg-indigo-700"
+                    className="w-full bg-indigo-600 hover:bg-indigo-700 shadow-lg"
                     onClick={() => navigate('/rooms', { state: { hotelFilter: hotel.id } })}
                   >
-                    Salon Ara
+                    Salon Ara ve Rezervasyon Yap
                   </Button>
-                  {hotel.phone ? (
-                    <Button 
-                      variant="outline" 
-                      className="w-full"
-                      onClick={() => window.open(`tel:${hotel.phone}`)}
-                    >
-                      Hemen Ara
-                    </Button>
-                  ) : (
-                    <div className="w-full p-4 bg-indigo-50 border border-indigo-200 rounded-lg text-center">
-                      <p className="text-sm text-indigo-900 font-medium mb-1">
-                        📞 İletişim Bilgileri
-                      </p>
-                      <p className="text-xs text-indigo-700">
-                        Rezervasyon sonrası görüntülenecektir
-                      </p>
-                    </div>
-                  )}
                 </div>
               </CardContent>
             </Card>
