@@ -685,6 +685,20 @@ def calculate_display_price(base_price: float, base_currency: str, target_curren
         exchange_rate=rate
     )
 
+async def get_optional_user(credentials: HTTPAuthorizationCredentials = Depends(HTTPBearer(auto_error=False))):
+    """Get current user if authenticated, None if not"""
+    if not credentials:
+        return None
+    try:
+        payload = jwt.decode(credentials.credentials, SECRET_KEY, algorithms=[ALGORITHM])
+        email = payload.get("sub")
+        if email:
+            user = await db.users.find_one({"email": email, "is_active": True})
+            return user
+    except:
+        pass
+    return None
+
 async def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(security)):
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
