@@ -21,9 +21,9 @@
 - [ ] Booking reminder emails
 
 ### 3. Otel/Salon Görselleri
-- [ ] Multiple image upload
-- [ ] Image gallery component
-- [ ] Thumbnail preview
+- [x] Multiple image upload
+- [x] Image gallery component
+- [x] Thumbnail preview
 - [ ] Image compression
 
 ---
