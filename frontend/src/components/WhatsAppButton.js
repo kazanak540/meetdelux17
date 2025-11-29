@@ -9,7 +9,7 @@ const WhatsAppButton = () => {
   const phoneNumber = '905352439696';
   
   // Varsayılan mesaj
-  const defaultMessage = 'Merhaba! MeetDelux üzerinden otel ve toplantı salonu hakkında bilgi almak istiyorum.';
+  const defaultMessage = 'Merhaba! MeetDelux üzerinden toplantı ve balo salonu hakkında bilgi almak istiyorum.';
   
   const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(defaultMessage)}`;
 
