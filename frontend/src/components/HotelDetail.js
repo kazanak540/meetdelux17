@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { AuthContext } from '../App';
 import { Button } from './ui/button';
 import { Card, CardContent } from './ui/card';
 import { MapPin, Star, Phone, Mail, Globe, Users, Wifi, Car, Utensils, Dumbbell, Coffee, Building2, Monitor, Volume2, Snowflake, Image as ImageIcon } from 'lucide-react';
@@ -8,6 +9,8 @@ import GoogleMap from './GoogleMap';
 import { toast } from 'sonner';
 import useCurrency from '../hooks/useCurrency';
 import ImageGalleryModal from './ImageGalleryModal';
+import ReviewForm from './ReviewForm';
+import ReviewList from './ReviewList';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
