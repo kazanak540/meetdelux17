@@ -2,11 +2,16 @@
 
 ## 🔴 KRİTİK EKSİKLER (Öncelikli)
 
-### 1. ✅ Ödeme Sistemi Tamamlanmamış
+### 1. Ödeme Sistemi Tamamlanmamış
 - [ ] Gerçek Stripe API key entegrasyonu
 - [ ] Webhook endpoint ekle
 - [ ] Success/Cancel sayfaları
 - [ ] Payment tracking
+
+### 0. Platform Bypass Koruması
+- [x] İletişim bilgileri gizlendi (phone/email)
+- [x] Rezervasyon sonrası paylaşım
+- [x] Komisyon kaybı önlendi
 
 ### 2. 🔄 Email Servisi (ŞU AN ÜSTÜNDE ÇALIŞILIYOR)
 **Email Credentials:**
