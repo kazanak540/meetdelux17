@@ -933,8 +933,8 @@ async def get_hotel(hotel_id: str):
         )
     
     # Hide contact info from customers (prevent platform bypass)
-    hotel["phone"] = "Rezervasyon sonrası paylaşılacaktır"
-    hotel["email"] = "Rezervasyon sonrası paylaşılacaktır"
+    hotel["phone"] = None
+    hotel["email"] = None
     
     return HotelResponse(**hotel)
 
