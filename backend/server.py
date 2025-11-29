@@ -1491,6 +1491,45 @@ async def delete_extra_service(
     return {"message": "Service deleted successfully"}
 
 # Booking Routes
+@api_router.get("/rooms/{room_id}/availability")
+async def get_room_availability(
+    room_id: str,
+    start_date: str,  # YYYY-MM-DD format
+    end_date: str
+):
+    """Get room availability and booked dates"""
+    try:
+        start = datetime.strptime(start_date, "%Y-%m-%d")
+        end = datetime.strptime(end_date, "%Y-%m-%d")
+    except ValueError:
+        raise HTTPException(status_code=400, detail="Invalid date format. Use YYYY-MM-DD")
+    
+    # Get all bookings for this room in the date range
+    bookings = await db.bookings.find({
+        "room_id": room_id,
+        "status": {"$in": [BookingStatus.PENDING, BookingStatus.CONFIRMED]},
+        "$or": [
+            {"start_date": {"$lte": end}, "end_date": {"$gte": start}}
+        ]
+    }).to_list(length=100)
+    
+    # Collect booked dates
+    booked_dates = []
+    for booking in bookings:
+        current = booking["start_date"]
+        while current <= booking["end_date"]:
+            booked_dates.append(current.strftime("%Y-%m-%d"))
+            current += timedelta(days=1)
+    
+    # Check if requested dates are available
+    availability = await check_room_availability(room_id, start, end)
+    
+    return {
+        "is_available": availability["is_available"],
+        "booked_dates": list(set(booked_dates)),
+        "conflicting_bookings": len(bookings)
+    }
+
 @api_router.post("/bookings", response_model=BookingResponse)
 async def create_booking(booking_data: BookingCreate, current_user: dict = Depends(get_current_user)):
     # Verify room exists
