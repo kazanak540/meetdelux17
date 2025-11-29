@@ -22,34 +22,8 @@ DB_NAME = os.environ.get('DB_NAME', 'meetdelux')
 # Hotel images (15 different luxury hotels - LOCAL FILES)
 HOTEL_IMAGES = [f"/images/hotels/hotel-{i}.jpg" for i in range(1, 16)]
 
-# Conference room images (20 different rooms)
-ROOM_IMAGES = [
-    # Executive Boardrooms
-    "https://images.unsplash.com/photo-1431540015161-0bf868a2d407?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDk1ODF8MHwxfHNlYXJjaHwxfHxib2FyZHJvb218ZW58MHx8fHwxNzY0MzQ2MzQ2fDA&ixlib=rb-4.1.0&q=85",
-    "https://images.unsplash.com/photo-1582653291997-079a1c04e5a1?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NjZ8MHwxfHNlYXJjaHwxfHxjb25mZXJlbmNlJTIwcm9vbXxlbnwwfHx8fDE3NjQzNDYzMzR8MA&ixlib=rb-4.1.0&q=85",
-    "https://images.unsplash.com/photo-1517502884422-41eaead166d4?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NjZ8MHwxfHNlYXJjaHw0fHxjb25mZXJlbmNlJTIwcm9vbXxlbnwwfHx8fDE3NjQzNDYzMzR8MA&ixlib=rb-4.1.0&q=85",
-    "https://images.unsplash.com/photo-1497366811353-6870744d04b2?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDk1ODF8MHwxfHNlYXJjaHw0fHxib2FyZHJvb218ZW58MHx8fHwxNzY0MzQ2MzQ2fDA&ixlib=rb-4.1.0&q=85",
-    # Medium Conference Rooms
-    "https://images.unsplash.com/photo-1571624436279-b272aff752b5?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NjZ8MHwxfHNlYXJjaHwzfHxjb25mZXJlbmNlJTIwcm9vbXxlbnwwfHx8fDE3NjQzNDYzMzR8MA&ixlib=rb-4.1.0&q=85",
-    "https://images.unsplash.com/photo-1744095407215-66e40734e23a?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDQ2NDN8MHwxfHNlYXJjaHwxfHxtZWV0aW5nJTIwaGFsbHxlbnwwfHx8fDE3NjQzNDYzNDB8MA&ixlib=rb-4.1.0&q=85",
-    "https://images.unsplash.com/photo-1573167507387-6b4b98cb7c13?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDk1ODF8MHwxfHNlYXJjaHwzfHxib2FyZHJvb218ZW58MHx8fHwxNzY0MzQ2MzQ2fDA&ixlib=rb-4.1.0&q=85",
-    "https://images.pexels.com/photos/2976970/pexels-photo-2976970.jpeg",
-    # Large Event Halls
-    "https://images.unsplash.com/photo-1759477274116-e3cb02d2b9d8?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDQ2NDN8MHwxfHNlYXJjaHw0fHxtZWV0aW5nJTIwaGFsbHxlbnwwfHx8fDE3NjQzNDYzNDB8MA&ixlib=rb-4.1.0&q=85",
-    "https://images.pexels.com/photos/159213/hall-congress-architecture-building-159213.jpeg",
-    "https://images.pexels.com/photos/269140/pexels-photo-269140.jpeg",
-    "https://images.pexels.com/photos/416320/pexels-photo-416320.jpeg",
-    # Theater-Style Auditoriums
-    "https://images.unsplash.com/photo-1596522354195-e84ae3c98731?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDQ2Mzl8MHwxfHNlYXJjaHwxfHxhdWRpdG9yaXVtfGVufDB8fHx8MTc2NDM0NjM1M3ww&ixlib=rb-4.1.0&q=85",
-    "https://images.unsplash.com/photo-1587825140708-dfaf72ae4b04?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDQ2Mzl8MHwxfHNlYXJjaHwyfHxhdWRpdG9yaXVtfGVufDB8fHx8MTc2NDM0NjM1M3ww&ixlib=rb-4.1.0&q=85",
-    "https://images.unsplash.com/photo-1594122230689-45899d9e6f69?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDQ2Mzl8MHwxfHNlYXJjaHwzfHxhdWRpdG9yaXVtfGVufDB8fHx8MTc2NDM0NjM1M3ww&ixlib=rb-4.1.0&q=85",
-    "https://images.unsplash.com/photo-1606761568499-6d2451b23c66?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDQ2Mzl8MHwxfHNlYXJjaHw0fHxhdWRpdG9yaXVtfGVufDB8fHx8MTc2NDM0NjM1M3ww&ixlib=rb-4.1.0&q=85",
-    # Classroom-Style
-    "https://images.pexels.com/photos/3864594/pexels-photo-3864594.jpeg",
-    "https://images.pexels.com/photos/14501973/pexels-photo-14501973.jpeg",
-    "https://images.unsplash.com/photo-1628062699790-7c45262b82b4?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NjZ8MHwxfHNlYXJjaHwyfHxjb25mZXJlbmNlJTIwcm9vbXxlbnwwfHx8fDE3NjQzNDYzMzR8MA&ixlib=rb-4.1.0&q=85",
-    "https://images.unsplash.com/photo-1698904087385-6b36002264a8?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDQ2NDN8MHwxfHNlYXJjaHwzfHxtZWV0aW5nJTIwaGFsbHxlbnwwfHx8fDE3NjQzNDYzNDB8MA&ixlib=rb-4.1.0&q=85"
-]
+# Conference room images (20 different rooms - LOCAL FILES)
+ROOM_IMAGES = [f"/images/rooms/room-{i}.jpg" for i in range(1, 21)]
 
 # Hotel data with Turkish cities
 HOTELS_DATA = [
