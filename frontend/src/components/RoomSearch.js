@@ -103,30 +103,7 @@ const RoomSearch = () => {
     searchRooms(cleared);
   };
 
-  const handleFilterChange = (key, value) => {
-    setFilters(prev => ({
-      ...prev,
-      [key]: value
-    }));
-  };
-
-  const handleFeatureToggle = (feature) => {
-    setFilters(prev => ({
-      ...prev,
-      features: prev.features.includes(feature)
-        ? prev.features.filter(f => f !== feature)
-        : [...prev.features, feature]
-    }));
-  };
-
-  const clearFilters = () => {
-    setFilters({
-      city: '',
-      min_capacity: '',
-      max_price: '',
-      features: []
-    });
-  };
+  // Old filter functions removed - using FilterSidebar now
 
   const getHotelName = (hotelId) => {
     const hotel = hotels.find(h => h.id === hotelId);
