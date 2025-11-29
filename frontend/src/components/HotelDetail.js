@@ -454,6 +454,60 @@ const HotelDetail = () => {
         </div>
       </div>
 
+      {/* Reviews Section */}
+      <div className="mt-12">
+        <h2 className="text-3xl font-bold text-gray-900 mb-8">
+          Değerlendirmeler & Yorumlar
+        </h2>
+        
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Review Form (Left Column) */}
+          <div className="lg:col-span-1">
+            {user && user.role === 'customer' ? (
+              <div className="sticky top-24">
+                <ReviewForm 
+                  hotelId={id} 
+                  onReviewSubmitted={() => {
+                    setReviewRefresh(prev => prev + 1);
+                    toast.success('Yorumunuz için teşekkürler!');
+                  }}
+                />
+              </div>
+            ) : !user ? (
+              <Card>
+                <CardContent className="p-6 text-center">
+                  <p className="text-gray-600 mb-4">
+                    Yorum yapmak için giriş yapmalısınız
+                  </p>
+                  <Button
+                    onClick={() => navigate('/login')}
+                    className="bg-indigo-600 hover:bg-indigo-700"
+                  >
+                    Giriş Yap
+                  </Button>
+                </CardContent>
+              </Card>
+            ) : (
+              <Card>
+                <CardContent className="p-6 text-center">
+                  <p className="text-gray-600">
+                    Sadece müşteriler yorum yapabilir
+                  </p>
+                </CardContent>
+              </Card>
+            )}
+          </div>
+
+          {/* Reviews List (Right Column) */}
+          <div className="lg:col-span-2">
+            <ReviewList 
+              hotelId={id} 
+              refreshTrigger={reviewRefresh}
+            />
+          </div>
+        </div>
+      </div>
+
       {/* Image Gallery Modal */}
       <ImageGalleryModal
         images={hotel?.images || []}
