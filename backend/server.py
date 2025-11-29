@@ -933,6 +933,12 @@ async def get_hotels(
         filter_query["star_rating"] = star_rating
     
     hotels = await db.hotels.find(filter_query).skip(skip).limit(limit).to_list(length=limit)
+    
+    # Hide contact info from customers (prevent platform bypass)
+    for hotel in hotels:
+        hotel["phone"] = None
+        hotel["email"] = None
+    
     return [HotelResponse(**hotel) for hotel in hotels]
 
 @api_router.get("/hotels/{hotel_id}", response_model=HotelResponse)
