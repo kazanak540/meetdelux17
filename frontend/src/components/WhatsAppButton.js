@@ -1,20 +1,28 @@
 import React, { useState } from 'react';
-import { MessageCircle, X } from 'lucide-react';
+import { MessageCircle, Phone } from 'lucide-react';
 
 const WhatsAppButton = () => {
-  const [isHovered, setIsHovered] = useState(false);
-  const [showTooltip, setShowTooltip] = useState(false);
+  const [isWhatsAppHovered, setIsWhatsAppHovered] = useState(false);
+  const [isPhoneHovered, setIsPhoneHovered] = useState(false);
+  const [showWhatsAppTooltip, setShowWhatsAppTooltip] = useState(false);
+  const [showPhoneTooltip, setShowPhoneTooltip] = useState(false);
 
   // WhatsApp numarası (uluslararası format)
   const phoneNumber = '905352439696';
+  const displayPhone = '+90 535 243 96 96';
   
   // Varsayılan mesaj
   const defaultMessage = 'Merhaba! MeetDelux üzerinden toplantı ve balo salonu hakkında bilgi almak istiyorum.';
   
   const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(defaultMessage)}`;
+  const phoneUrl = `tel:+${phoneNumber}`;
 
-  const handleClick = () => {
+  const handleWhatsAppClick = () => {
     window.open(whatsappUrl, '_blank');
+  };
+
+  const handlePhoneClick = () => {
+    window.location.href = phoneUrl;
   };
 
   return (
