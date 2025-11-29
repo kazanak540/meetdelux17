@@ -31,8 +31,10 @@
 ## 🟡 ÖNEMLİ EKSİKLER
 
 ### 4. Rezervasyon Sistemi
-- [ ] Real-time availability calendar
-- [ ] Conflict detection
+- [x] Real-time availability API
+- [x] Conflict detection (backend)
+- [x] Booked dates warning
+- [ ] Visual calendar UI (fancy)
 - [ ] Instant booking option
 - [ ] Easy cancellation flow
 
