@@ -395,13 +395,24 @@ const HotelDetail = () => {
                   >
                     Salon Ara
                   </Button>
-                  <Button 
-                    variant="outline" 
-                    className="w-full"
-                    onClick={() => window.open(`tel:${hotel.phone}`)}
-                  >
-                    Hemen Ara
-                  </Button>
+                  {hotel.phone ? (
+                    <Button 
+                      variant="outline" 
+                      className="w-full"
+                      onClick={() => window.open(`tel:${hotel.phone}`)}
+                    >
+                      Hemen Ara
+                    </Button>
+                  ) : (
+                    <div className="w-full p-4 bg-indigo-50 border border-indigo-200 rounded-lg text-center">
+                      <p className="text-sm text-indigo-900 font-medium mb-1">
+                        📞 İletişim Bilgileri
+                      </p>
+                      <p className="text-xs text-indigo-700">
+                        Rezervasyon sonrası görüntülenecektir
+                      </p>
+                    </div>
+                  )}
                 </div>
               </CardContent>
             </Card>
