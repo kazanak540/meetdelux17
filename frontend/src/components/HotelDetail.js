@@ -18,6 +18,7 @@ const API = `${BACKEND_URL}/api`;
 const HotelDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { user } = useContext(AuthContext);
   const { formatPrice, currency } = useCurrency();
   const [hotel, setHotel] = useState(null);
   const [rooms, setRooms] = useState([]);
@@ -25,6 +26,7 @@ const HotelDetail = () => {
   const [loading, setLoading] = useState(true);
   const [galleryOpen, setGalleryOpen] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+  const [reviewRefresh, setReviewRefresh] = useState(0);
 
   useEffect(() => {
     fetchHotelDetails();
