@@ -20,6 +20,7 @@ import BookingList from './components/BookingList';
 import PaymentPage from './components/PaymentPage';
 import AdminApprovalPanel from './components/AdminApprovalPanel';
 import ContactPage from './components/ContactPage';
+import WhatsAppButton from './components/WhatsAppButton';
 import { Toaster } from 'sonner';
 import { CurrencyProvider } from './hooks/useCurrency';
 
