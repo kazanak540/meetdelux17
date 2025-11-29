@@ -156,9 +156,21 @@ class HotelCreate(BaseModel):
     latitude: Optional[float] = None
     longitude: Optional[float] = None
 
-class HotelResponse(HotelCreate):
+class HotelResponse(BaseModel):
     id: str
     manager_id: str
+    name: str
+    description: Optional[str] = None
+    address: str
+    city: str
+    phone: Optional[str] = None  # Hidden from customers
+    email: Optional[str] = None  # Hidden from customers
+    website: Optional[str] = None
+    star_rating: Optional[int] = Field(None, ge=1, le=5)
+    facilities: List[str] = []
+    images: List[str] = []
+    latitude: Optional[float] = None
+    longitude: Optional[float] = None
     created_at: datetime
     is_active: bool = True
     approval_status: ApprovalStatus = ApprovalStatus.PENDING
