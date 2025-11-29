@@ -11,6 +11,7 @@ import { ArrowLeft, Save, Building2 } from 'lucide-react';
 import { toast } from 'sonner';
 import GooglePlacesAutocomplete from './GooglePlacesAutocomplete';
 import ImageUpload from './ImageUpload';
+import ImageUploader from './ImageUploader';
 import VideoUpload from './VideoUpload';
 import Video360Upload from './Video360Upload';
 
