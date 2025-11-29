@@ -19,24 +19,8 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 MONGO_URL = os.environ.get('MONGO_URL', 'mongodb://localhost:27017')
 DB_NAME = os.environ.get('DB_NAME', 'meetdelux')
 
-# Hotel images (15 different luxury hotels)
-HOTEL_IMAGES = [
-    "https://images.unsplash.com/photo-1561501900-3701fa6a0864?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Nzd8MHwxfHNlYXJjaHwxfHxsdXh1cnklMjBob3RlbHxlbnwwfHx8fDE3NjQyOTcyODB8MA&ixlib=rb-4.1.0&q=85",
-    "https://images.unsplash.com/photo-1578683010236-d716f9a3f461?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Nzd8MHwxfHNlYXJjaHwyfHxsdXh1cnklMjBob3RlbHxlbnwwfHx8fDE3NjQyOTcyODB8MA&ixlib=rb-4.1.0&q=85",
-    "https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Nzd8MHwxfHNlYXJjaHwzfHxsdXh1cnklMjBob3RlbHxlbnwwfHx8fDE3NjQyOTcyODB8MA&ixlib=rb-4.1.0&q=85",
-    "https://images.unsplash.com/photo-1621293954908-907159247fc8?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Nzd8MHwxfHNlYXJjaHw0fHxsdXh1cnklMjBob3RlbHxlbnwwfHx8fDE3NjQyOTcyODB8MA&ixlib=rb-4.1.0&q=85",
-    "https://images.unsplash.com/photo-1624800873328-129498d2847a?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzF8MHwxfHNlYXJjaHwxfHxjb25mZXJlbmNlJTIwY2VudGVyfGVufDB8fHx8MTc2NDM0NjI3MXww&ixlib=rb-4.1.0&q=85",
-    "https://images.unsplash.com/photo-1624800872504-79cf97b34af4?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzF8MHwxfHNlYXJjaHwyfHxjb25mZXJlbmNlJTIwY2VudGVyfGVufDB8fHx8MTc2NDM0NjI3MXww&ixlib=rb-4.1.0&q=85",
-    "https://images.unsplash.com/photo-1748802633639-22f99d0b3a0c?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzF8MHwxfHNlYXJjaHwzfHxjb25mZXJlbmNlJTIwY2VudGVyfGVufDB8fHx8MTc2NDM0NjI3MXww&ixlib=rb-4.1.0&q=85",
-    "https://images.unsplash.com/photo-1672396309399-353d95b114a1?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzF8MHwxfHNlYXJjaHw0fHxjb25mZXJlbmNlJTIwY2VudGVyfGVufDB8fHx8MTc2NDM0NjI3MXww&ixlib=rb-4.1.0&q=85",
-    "https://images.unsplash.com/photo-1711743266323-5badf42d4797?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDQ2MzR8MHwxfHNlYXJjaHwxfHxob3RlbCUyMGV4dGVyaW9yfGVufDB8fHx8MTc2NDM0NjI3N3ww&ixlib=rb-4.1.0&q=85",
-    "https://images.unsplash.com/photo-1607320895054-c5c543e9a069?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDQ2MzR8MHwxfHNlYXJjaHwyfHxob3RlbCUyMGV4dGVyaW9yfGVufDB8fHx8MTc2NDM0NjI3N3ww&ixlib=rb-4.1.0&q=85",
-    "https://images.unsplash.com/photo-1536269404660-0a8d4e88bf1b?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDQ2MzR8MHwxfHNlYXJjaHwzfHxob3RlbCUyMGV4dGVyaW9yfGVufDB8fHx8MTc2NDM0NjI3N3ww&ixlib=rb-4.1.0&q=85",
-    "https://images.unsplash.com/photo-1668480441891-3744c25337a3?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDQ2MzR8MHwxfHNlYXJjaHw0fHxob3RlbCUyMGV4dGVyaW9yfGVufDB8fHx8MTc2NDM0NjI3N3ww&ixlib=rb-4.1.0&q=85",
-    "https://images.pexels.com/photos/34931018/pexels-photo-34931018.jpeg",
-    "https://images.pexels.com/photos/2774566/pexels-photo-2774566.jpeg",
-    "https://images.pexels.com/photos/34958207/pexels-photo-34958207.jpeg"
-]
+# Hotel images (15 different luxury hotels - LOCAL FILES)
+HOTEL_IMAGES = [f"/images/hotels/hotel-{i}.jpg" for i in range(1, 16)]
 
 # Conference room images (20 different rooms)
 ROOM_IMAGES = [
