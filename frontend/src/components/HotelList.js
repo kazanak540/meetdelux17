@@ -242,6 +242,21 @@ const HotelList = () => {
                     {hotel.address}
                   </p>
                   
+                  {/* Rating */}
+                  <div className="mb-4">
+                    <StarRating 
+                      rating={hotel.average_rating || 0} 
+                      size="sm" 
+                      showNumber={true}
+                    />
+                    <div className="flex items-center space-x-2 mt-1">
+                      <MessageSquare className="h-4 w-4 text-gray-400" />
+                      <span className="text-xs text-gray-500">
+                        {hotel.total_reviews || 0} değerlendirme
+                      </span>
+                    </div>
+                  </div>
+                  
                   {/* Facilities */}
                   <div className="flex flex-wrap gap-2 mb-4">
                     {hotel.facilities?.slice(0, 4).map((facility, index) => (
@@ -258,10 +273,7 @@ const HotelList = () => {
                   </div>
                   
                   {/* Action Button */}
-                  <div className="flex items-center justify-between">
-                    <div className="text-sm text-gray-500">
-                      <span className="font-medium">{hotel.total_reviews || 0}</span> değerlendirme
-                    </div>
+                  <div className="flex justify-end">
                     <Button 
                       size="sm" 
                       className="group-hover:bg-indigo-600 group-hover:text-white transition-all"
