@@ -201,9 +201,19 @@ const RoomSearch = () => {
           </p>
         </div>
 
-        <div className="flex gap-8">
+        <div className="flex flex-col lg:flex-row gap-8">
           {/* Filters Sidebar */}
-          <div className="w-80">
+          <div className="w-full lg:w-80">
+            <FilterSidebar
+              onFilterChange={handleFilterUpdate}
+              onClear={handleClearFilters}
+            />
+          </div>
+
+          {/* Results - OLD SIDEBAR REMOVED */}
+          <div className="flex-1 hidden">
+            {/* Old sidebar başlangıcı */}
+            <div className="w-80-old-remove-this">
             <Card className="sticky top-4">
               <CardHeader>
                 <CardTitle className="flex items-center space-x-2">
