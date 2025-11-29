@@ -4,8 +4,9 @@ import axios from 'axios';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Card, CardContent } from './ui/card';
-import { Search, MapPin, Star, Building2, Users, Wifi, Coffee, Car, Dumbbell, Utensils } from 'lucide-react';
+import { Search, MapPin, Star, Building2, Users, Wifi, Coffee, Car, Dumbbell, Utensils, MessageSquare } from 'lucide-react';
 import { toast } from 'sonner';
+import StarRating from './StarRating';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
