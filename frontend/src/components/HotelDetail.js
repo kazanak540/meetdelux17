@@ -12,6 +12,7 @@ import ImageGalleryModal from './ImageGalleryModal';
 import ReviewForm from './ReviewForm';
 import ReviewList from './ReviewList';
 import Breadcrumb from './Breadcrumb';
+import ShareButton from './ShareButton';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
