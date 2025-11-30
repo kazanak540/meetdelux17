@@ -3052,6 +3052,19 @@ async def create_review(
     # Update hotel average rating
     await update_hotel_rating(review_data.hotel_id)
     
+    # Send notification to admin
+    try:
+        review_details = {
+            'hotel_name': hotel['name'],
+            'customer_name': current_user['full_name'],
+            'rating': review_data.rating,
+            'comment': review_data.comment or 'Yorum yok'
+        }
+        email_service.send_admin_new_review_notification(review_details)
+        logger.info("New review notification sent to admin")
+    except Exception as e:
+        logger.error(f"Failed to send review notification: {str(e)}")
+    
     return review
 
 @api_router.get("/reviews/hotel/{hotel_id}")
