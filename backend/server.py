@@ -966,6 +966,56 @@ async def get_hotel(hotel_id: str):
     
     return HotelResponse(**hotel)
 
+@api_router.put("/hotels/{hotel_id}")
+async def update_hotel(
+    hotel_id: str,
+    hotel_data: dict,
+    current_user: dict = Depends(get_current_user)
+):
+    """Update hotel information (Admin or Hotel Manager only)"""
+    
+    # Only admin or hotel manager can update
+    if current_user["role"] not in [UserRole.ADMIN, UserRole.HOTEL_MANAGER]:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Only admins and hotel managers can update hotels"
+        )
+    
+    # Find hotel
+    hotel = await db.hotels.find_one({"id": hotel_id})
+    if not hotel:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Hotel not found"
+        )
+    
+    # Hotel manager can only update their own hotel
+    if current_user["role"] == UserRole.HOTEL_MANAGER:
+        if hotel.get("manager_id") != current_user["id"]:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="You can only update your own hotels"
+            )
+    
+    # Update hotel
+    hotel_data["updated_at"] = datetime.now(timezone.utc)
+    await db.hotels.update_one({"id": hotel_id}, {"$set": hotel_data})
+    
+    # Send notification to admin
+    try:
+        update_details = {
+            'name': hotel_data.get('name', hotel['name']),
+            'city': hotel_data.get('city', hotel['city']),
+            'manager_name': current_user['full_name']
+        }
+        email_service.send_admin_hotel_update_notification(update_details)
+        logger.info("Hotel update notification sent to admin")
+    except Exception as e:
+        logger.error(f"Failed to send hotel update notification: {str(e)}")
+    
+    updated_hotel = await db.hotels.find_one({"id": hotel_id}, {"_id": 0})
+    return HotelResponse(**updated_hotel)
+
 @api_router.delete("/hotels/{hotel_id}")
 async def delete_hotel(
     hotel_id: str,
