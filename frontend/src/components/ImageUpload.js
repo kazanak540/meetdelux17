@@ -37,16 +37,8 @@ const ImageUpload = ({ entityId, entityType, images = [], onImageUploaded, onIma
       toast.info(`${fileArray.length} fotoğraf ekleniyor...`);
       
       fileArray.forEach((file) => {
-        const reader = new FileReader();
-        reader.onloadend = () => {
-          const previewData = {
-            file: file,
-            preview: reader.result,
-            isTemp: true
-          };
-          onImageUploaded(previewData);
-        };
-        reader.readAsDataURL(file);
+        // Pass File object directly (will be converted to base64 by parent)
+        onImageUploaded(file);
       });
       return;
     }
