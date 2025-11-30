@@ -624,6 +624,108 @@ class EmailService:
         
         return self.send_email(admin_email, subject, html_content)
 
+    def send_admin_hotel_update_notification(self, hotel_details: dict):
+        """Send notification to admin when hotel info is updated"""
+        admin_email = "kazanak@gmail.com"
+        subject = f"🔄 Otel Güncellendi: {hotel_details.get('name', 'N/A')}"
+        
+        html_content = f"""
+        <h2>Otel Bilgileri Güncellendi</h2>
+        <p><strong>Otel:</strong> {hotel_details.get('name', 'N/A')}</p>
+        <p><strong>Şehir:</strong> {hotel_details.get('city', 'N/A')}</p>
+        <p><strong>Yönetici:</strong> {hotel_details.get('manager_name', 'N/A')}</p>
+        <p><strong>Tarih:</strong> {datetime.now().strftime('%d.%m.%Y %H:%M')}</p>
+        <p>Lütfen kontrol edin.</p>
+        """
+        
+        return self.send_email(admin_email, subject, html_content)
+
+    def send_admin_new_room_notification(self, room_details: dict):
+        """Send notification to admin when new room is added"""
+        admin_email = "kazanak@gmail.com"
+        subject = f"🏢 Yeni Salon Eklendi: {room_details.get('name', 'N/A')}"
+        
+        html_content = f"""
+        <h2>Yeni Salon Eklendi</h2>
+        <p><strong>Salon:</strong> {room_details.get('name', 'N/A')}</p>
+        <p><strong>Otel:</strong> {room_details.get('hotel_name', 'N/A')}</p>
+        <p><strong>Kapasite:</strong> {room_details.get('capacity', 'N/A')} kişi</p>
+        <p><strong>Fiyat:</strong> ₺{room_details.get('price_per_day', 'N/A')}/gün</p>
+        <p><strong>Tarih:</strong> {datetime.now().strftime('%d.%m.%Y %H:%M')}</p>
+        """
+        
+        return self.send_email(admin_email, subject, html_content)
+
+    def send_admin_room_update_notification(self, room_details: dict):
+        """Send notification to admin when room is updated"""
+        admin_email = "kazanak@gmail.com"
+        subject = f"🔄 Salon Güncellendi: {room_details.get('name', 'N/A')}"
+        
+        html_content = f"""
+        <h2>Salon Bilgileri Güncellendi</h2>
+        <p><strong>Salon:</strong> {room_details.get('name', 'N/A')}</p>
+        <p><strong>Otel:</strong> {room_details.get('hotel_name', 'N/A')}</p>
+        <p><strong>Tarih:</strong> {datetime.now().strftime('%d.%m.%Y %H:%M')}</p>
+        """
+        
+        return self.send_email(admin_email, subject, html_content)
+
+    def send_admin_new_booking_notification(self, booking_details: dict):
+        """Send notification to admin for new booking"""
+        admin_email = "kazanak@gmail.com"
+        subject = f"📅 Yeni Rezervasyon: {booking_details.get('hotel_name', 'N/A')}"
+        
+        html_content = f"""
+        <h2>Yeni Rezervasyon Yapıldı!</h2>
+        <p><strong>Müşteri:</strong> {booking_details.get('customer_name', 'N/A')}</p>
+        <p><strong>Email:</strong> {booking_details.get('customer_email', 'N/A')}</p>
+        <p><strong>Otel:</strong> {booking_details.get('hotel_name', 'N/A')}</p>
+        <p><strong>Salon:</strong> {booking_details.get('room_name', 'N/A')}</p>
+        <p><strong>Tarih:</strong> {booking_details.get('start_date')} - {booking_details.get('end_date')}</p>
+        <p><strong>Misafir Sayısı:</strong> {booking_details.get('total_guests', 'N/A')}</p>
+        <p><strong>Tutar:</strong> ₺{booking_details.get('total_amount', 'N/A')}</p>
+        <p><strong>Durum:</strong> {booking_details.get('status', 'N/A')}</p>
+        """
+        
+        return self.send_email(admin_email, subject, html_content)
+
+    def send_admin_booking_cancelled_notification(self, booking_details: dict):
+        """Send notification to admin when booking is cancelled"""
+        admin_email = "kazanak@gmail.com"
+        subject = f"❌ Rezervasyon İptal Edildi: {booking_details.get('hotel_name', 'N/A')}"
+        
+        html_content = f"""
+        <h2>Rezervasyon İptal Edildi</h2>
+        <p><strong>Müşteri:</strong> {booking_details.get('customer_name', 'N/A')}</p>
+        <p><strong>Otel:</strong> {booking_details.get('hotel_name', 'N/A')}</p>
+        <p><strong>Salon:</strong> {booking_details.get('room_name', 'N/A')}</p>
+        <p><strong>İptal Tarihi:</strong> {datetime.now().strftime('%d.%m.%Y %H:%M')}</p>
+        <p><strong>Tutar:</strong> ₺{booking_details.get('total_amount', 'N/A')}</p>
+        """
+        
+        return self.send_email(admin_email, subject, html_content)
+
+    def send_admin_new_review_notification(self, review_details: dict):
+        """Send notification to admin for new review"""
+        admin_email = "kazanak@gmail.com"
+        subject = f"⭐ Yeni Yorum: {review_details.get('hotel_name', 'N/A')}"
+        
+        stars = "⭐" * review_details.get('rating', 0)
+        
+        html_content = f"""
+        <h2>Yeni Yorum Eklendi</h2>
+        <p><strong>Otel:</strong> {review_details.get('hotel_name', 'N/A')}</p>
+        <p><strong>Müşteri:</strong> {review_details.get('customer_name', 'N/A')}</p>
+        <p><strong>Puan:</strong> {stars} ({review_details.get('rating')}/5)</p>
+        <p><strong>Yorum:</strong></p>
+        <p style="padding: 10px; background: #f3f4f6; border-left: 3px solid #4f46e5;">
+            {review_details.get('comment', 'Yorum yok')}
+        </p>
+        <p><strong>Tarih:</strong> {datetime.now().strftime('%d.%m.%Y %H:%M')}</p>
+        """
+        
+        return self.send_email(admin_email, subject, html_content)
+
 
 # Create singleton instance
 email_service = EmailService()
