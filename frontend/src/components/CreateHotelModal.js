@@ -136,39 +136,14 @@ const CreateHotelModal = ({ isOpen, onClose, onSuccess }) => {
         facilities: formData.facilities,
         latitude: formData.latitude ? parseFloat(formData.latitude) : null,
         longitude: formData.longitude ? parseFloat(formData.longitude) : null,
-        images: [] // Empty initially
+        images: formData.images // Send images directly (base64)
       };
 
-      // Create hotel first
+      // Create hotel with images
       const response = await axios.post(`${API}/hotels`, hotelData);
       const createdHotel = response.data;
       
-      toast.success('Otel başarıyla oluşturuldu!');
-      
-      // Upload images if any
-      if (formData.images.length > 0) {
-        toast.info(`${formData.images.length} fotoğraf yükleniyor...`);
-        
-        const uploadPromises = formData.images.map(async (imageData) => {
-          if (imageData.isTemp && imageData.file) {
-            const formDataUpload = new FormData();
-            formDataUpload.append('file', imageData.file);
-            
-            try {
-              await axios.post(
-                `${API}/hotels/${createdHotel.id}/upload-image`, 
-                formDataUpload,
-                { headers: { 'Content-Type': 'multipart/form-data' } }
-              );
-            } catch (err) {
-              console.error('Image upload error:', err);
-            }
-          }
-        });
-        
-        await Promise.all(uploadPromises);
-        toast.success('Tüm fotoğraflar yüklendi!');
-      }
+      toast.success('Otel ve fotoğraflar başarıyla eklendi!');
       
       onSuccess(createdHotel);
       onClose();
