@@ -1724,6 +1724,21 @@ async def create_booking(booking_data: BookingCreate, current_user: dict = Depen
                     booking_details=booking_email_details
                 )
                 logger.info(f"New booking notification sent to hotel manager: {hotel_manager['email']}")
+            
+            # Send notification to admin
+            admin_details = {
+                'customer_name': current_user['full_name'],
+                'customer_email': current_user['email'],
+                'hotel_name': hotel['name'],
+                'room_name': room['name'],
+                'start_date': booking_dict['start_date'].strftime('%d.%m.%Y'),
+                'end_date': booking_dict['end_date'].strftime('%d.%m.%Y'),
+                'total_guests': booking_dict.get('number_of_attendees', 'N/A'),
+                'total_amount': booking_dict['total_price'],
+                'status': booking_dict['status']
+            }
+            email_service.send_admin_new_booking_notification(admin_details)
+            logger.info("New booking notification sent to admin")
                 
     except Exception as e:
         # Log error but don't fail the booking
