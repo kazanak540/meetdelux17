@@ -615,19 +615,29 @@ def generate_booking_confirmation_email(booking: dict, room: dict, hotel: dict, 
     return html, text
 
 # Currency and Location Utility Functions
+# IP geolocation cache (in-memory)
+ip_country_cache = {}
+
 async def get_client_country_from_ip(client_ip: str) -> str:
-    """Get country code from client IP address"""
+    """Get country code from client IP address (with caching)"""
     try:
-        # Eğer localhost ise Türkiye varsay
-        if client_ip in ["127.0.0.1", "localhost", "::1"]:
+        # Eğer localhost veya internal IP ise Türkiye varsay
+        if client_ip in ["127.0.0.1", "localhost", "::1"] or client_ip.startswith("10."):
             return "TR"
         
-        # IP geolocation servisini kullan
-        async with httpx.AsyncClient() as client:
+        # Cache'de varsa direkt dön
+        if client_ip in ip_country_cache:
+            return ip_country_cache[client_ip]
+        
+        # IP geolocation servisini kullan (timeout ile)
+        async with httpx.AsyncClient(timeout=2.0) as client:
             response = await client.get(f"http://ip-api.com/json/{client_ip}")
             if response.status_code == 200:
                 data = response.json()
-                return data.get("countryCode", "TR")
+                country_code = data.get("countryCode", "TR")
+                # Cache'e kaydet
+                ip_country_cache[client_ip] = country_code
+                return country_code
     except Exception as e:
         logger.error(f"IP geolocation error: {e}")
     
