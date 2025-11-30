@@ -69,11 +69,25 @@ const CreateHotelModal = ({ isOpen, onClose, onSuccess }) => {
     }));
   };
 
-  const handleImageUploaded = (imageUrl) => {
-    setFormData(prev => ({
-      ...prev,
-      images: [...prev.images, imageUrl]
-    }));
+  const handleImageUploaded = async (imageFile) => {
+    // Convert to base64
+    if (imageFile instanceof File) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const base64String = reader.result;
+        setFormData(prev => ({
+          ...prev,
+          images: [...prev.images, base64String]
+        }));
+      };
+      reader.readAsDataURL(imageFile);
+    } else {
+      // If already a URL/base64
+      setFormData(prev => ({
+        ...prev,
+        images: [...prev.images, imageFile]
+      }));
+    }
   };
 
   const handleImageRemoved = (imageData, index) => {
