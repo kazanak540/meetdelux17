@@ -1102,6 +1102,19 @@ async def create_conference_room(
     
     await db.conference_rooms.insert_one(room_dict)
     
+    # Send notification to admin
+    try:
+        room_details = {
+            'name': room_data.name,
+            'hotel_name': hotel['name'],
+            'capacity': room_data.capacity,
+            'price_per_day': room_data.price_per_day
+        }
+        email_service.send_admin_new_room_notification(room_details)
+        logger.info("New room notification sent to admin")
+    except Exception as e:
+        logger.error(f"Failed to send room notification: {str(e)}")
+    
     return ConferenceRoomResponse(**room_dict)
 
 @api_router.get("/hotels/{hotel_id}/rooms", response_model=List[ConferenceRoomResponse])
