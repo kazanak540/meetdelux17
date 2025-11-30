@@ -966,6 +966,56 @@ async def get_hotel(hotel_id: str):
     
     return HotelResponse(**hotel)
 
+@api_router.delete("/hotels/{hotel_id}")
+async def delete_hotel(
+    hotel_id: str,
+    current_user: dict = Depends(get_current_user)
+):
+    """Delete a hotel (Admin or Hotel Manager only)"""
+    
+    # Only admin or hotel manager can delete
+    if current_user["role"] not in [UserRole.ADMIN, UserRole.HOTEL_MANAGER]:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Only admins and hotel managers can delete hotels"
+        )
+    
+    # Find hotel
+    hotel = await db.hotels.find_one({"id": hotel_id})
+    if not hotel:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Hotel not found"
+        )
+    
+    # Hotel manager can only delete their own hotel
+    if current_user["role"] == UserRole.HOTEL_MANAGER:
+        if hotel.get("manager_id") != current_user["id"]:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="You can only delete your own hotels"
+            )
+    
+    # Delete all rooms associated with this hotel
+    await db.conference_rooms.delete_many({"hotel_id": hotel_id})
+    
+    # Delete all bookings associated with this hotel's rooms
+    await db.bookings.delete_many({"hotel_id": hotel_id})
+    
+    # Delete all reviews for this hotel
+    await db.reviews.delete_many({"hotel_id": hotel_id})
+    
+    # Delete the hotel
+    result = await db.hotels.delete_one({"id": hotel_id})
+    
+    if result.deleted_count == 0:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Hotel not found"
+        )
+    
+    return {"message": "Hotel and all related data deleted successfully", "hotel_id": hotel_id}
+
 # Conference Room Routes
 @api_router.post("/hotels/{hotel_id}/rooms", response_model=ConferenceRoomResponse)
 async def create_conference_room(
